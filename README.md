@@ -11,6 +11,8 @@ A evolução é um processo iterativo, em que cada população é conhecida como
 
 Para criar uma nova geração, o algoritmo genético normalmente atua através de duas operações genéticas, que são o crossover e a mutação. Para criar um filho, os dois pais mais aptos são selecionados. O filho recebe alguns genes do primeiro pai e outros dos segundo pai. Esse processo é chamado de crossover. Normalmente os genes são representados por bits em um computador.
 
+O próximo passo de um algoritmo genético é a mutação. Nele, alguns genes são trocados de forma randomica. Normalmente ocorre mais em indivíduos menos aptos.
+
 ## Funções fitness a serem resolvidas
 
 A imagem abaixo mostra as funções fitness a serem tratadas pelo algoritmo genético
