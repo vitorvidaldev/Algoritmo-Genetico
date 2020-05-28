@@ -13,9 +13,15 @@ Para criar uma nova geração, o algoritmo genético normalmente atua através d
 
 ## Funções fitness a serem resolvidas
 
-A imagem abaixo mostra as funções fitness a serem tratadas pelo algoritmo implementado
+A imagem abaixo mostra as funções fitness a serem tratadas pelo algoritmo genético.
 
 ![alt text](./img/funcoes.png)
+
+## Resultados parciais
+
+A figura abaixo apresenta o primeiro resultado parcial obtido. O algoritmo ainda não possui nenhuma característica de crossover implementada.
+
+![alt text](./img/resultado1.png)
 
 ## Licença
 
