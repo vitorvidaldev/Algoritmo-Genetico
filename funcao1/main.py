@@ -62,7 +62,7 @@ def GA(parents, fitness_function, popsize=100, max_iter=1000):
         best_parent), marker='.', c='b', s=200)
     plt.show()
 
-    # return best parents
+    # return best parent
     print('generation {}| best fitness {}| best_parent {}'.format(
         i, best_fitness, best_parent))
 
