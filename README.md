@@ -13,8 +13,7 @@ Para criar uma nova geração, o algoritmo genético normalmente atua através d
 
 ## Funções fitness a serem resolvidas
 
-A imagem abaixo mostra as funções fitness a serem tratadas pelo algoritmo genético.
-
+A imagem abaixo mostra as funções fitness a serem tratadas pelo algoritmo genético
 
 ![alt text](./img/funcoes.png)
 
