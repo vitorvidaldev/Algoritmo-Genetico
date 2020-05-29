@@ -7,54 +7,50 @@ def _fitness(x):
     return round(y, 10)
 
 
-fitness = np.vectorize(_fitness)
+fitness = np.vectorize(_fitness)  # função fitness (eixo y)
 
-x = np.linspace(start=-20, stop=20, num=200)  # population range
-# plt.plot(x, fitness(x))
-# plt.show()
+x = np.linspace(start=-20, stop=20, num=400)  # população (eixo x)
 
 
 def mutate(parents, fitness_function):
     n = int(len(parents))
     scores = fitness_function(parents)
-    idx = scores > 0  # positive values only
+    idx = scores > -2
     scores = scores[idx]
     parents = np.array(parents)[idx]
 
-    # resample parents with probabilities proportional to fitness
-    # then, add some noise for 'random' mutation
-    children = np.random.choice(parents, size=n, p=scores/scores.sum())
-    # add some noise to mutate
+    children = np.random.choice(parents, size=n)
+    # adição de ruído
     children = children + np.random.uniform(-0.51, 0.51, size=n)
-    return children.tolist()  # convert array to list
+    return children.tolist()  # retorna o eixo x após a mutação
 
 
-def GA(parents, fitness_function, popsize=100, max_iter=1000):
+def GA(parents, fitness_function, popsize=100, max_iter=10):
     History = []
-    # initial parents; gen zero
+    # gen zero
     best_parent, best_fitness = _get_fittest_parent(
-        parents, fitness)  # extract fittest individual
+        parents, fitness)  # extrai o individuo mais apto. (parents = posições aleatórias no eixo x, fitness = função da iteração)
 
-    # first plot the initial parents
-    x = np.linspace(start=-20, stop=20, num=200)  # population range
+    # plota o grafico da função
+    x = np.linspace(start=-20, stop=20, num=1000)
     plt.plot(x, fitness_function(x))
-    # plt.scatter(parents, fitness_function(parents), marker='x')
+    plt.scatter(parents, fitness_function(parents), marker='x')
 
-    # for each next generation
+    # próximas MAX_ITER gerações
     for i in range(1, max_iter):
         parents = mutate(parents, fitness_function=fitness_function)
 
         curr_parent, curr_fitness = _get_fittest_parent(
-            parents, fitness_function)  # extract fittest individual
+            parents, fitness_function)
 
-        # update best fitness values
+        # atualiza os melhores valores de fitness
         if curr_fitness < best_fitness:
             best_fitness = curr_fitness
             best_parent = curr_parent
 
         curr_parent, curr_fitness = _get_fittest_parent(
             parents, fitness_function)
-        # save generation MIN fitness
+        # salva a menor coordenada
         History.append((i, np.min(fitness_function(parents))))
 
     # plt.scatter(parents, fitness_function(parents))
@@ -70,14 +66,18 @@ def GA(parents, fitness_function, popsize=100, max_iter=1000):
 
 
 def _get_fittest_parent(parents, fitness):
-    _fitness = fitness(parents)
+    _fitness = fitness(parents)  # 100 pontos no eixo y
+    # lista de coordenas (x, y) da função
     PFitness = list(zip(parents, _fitness))
-    PFitness.sort(key=lambda x: x[1], reverse=False)
+    # ordena a lista de coordenadas em ordem crescente de acordo com a variável do eixo x
+    PFitness.sort(key=lambda x: x[1])
+    # (best_parent = x, best_fitness = y) ordem crescente
     best_parent, best_fitness = PFitness[0]
     return round(best_parent, 4), round(best_fitness, 4)
 
 
-x = np.linspace(start=-20, stop=20, num=200)
+x = np.linspace(start=-20, stop=20, num=400)  # 40 / 400 = 0.1 (step size)
+# 100 posições randomicas entre -20 e 20 (eixo x).
 init_pop = np.random.uniform(low=-20, high=20, size=100)
 
 parent_, fitness_, history_ = GA(init_pop, fitness)
