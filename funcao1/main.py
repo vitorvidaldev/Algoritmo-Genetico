@@ -2,83 +2,71 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def _fitness(x):
+def CalculaFitness(x):
     y = np.sin(x) + np.cos(x * np.sqrt(3))
-    return round(y, 10)
+    return round(y, 4)
 
 
-fitness = np.vectorize(_fitness)  # função fitness (eixo y)
-
-x = np.linspace(start=-20, stop=20, num=400)  # população (eixo x)
-
-
-def mutate(parents, fitness_function):
+def mutate(parents, funcao_fitness):
     n = int(len(parents))
-    scores = fitness_function(parents)
-    idx = scores > -2
-    scores = scores[idx]
-    parents = np.array(parents)[idx]
+    scores = funcao_fitness(parents)
+    scores = scores[scores > -2]
+    parents = np.array(parents)[scores > -2]
 
     children = np.random.choice(parents, size=n)
-    # adição de ruído
-    children = children + np.random.uniform(-0.51, 0.51, size=n)
     return children.tolist()  # retorna o eixo x após a mutação
 
 
-def GA(parents, fitness_function, popsize=100, max_iter=10):
-    History = []
-    # gen zero
-    best_parent, best_fitness = _get_fittest_parent(
-        parents, fitness)  # extrai o individuo mais apto. (parents = posições aleatórias no eixo x, fitness = função da iteração)
+def GA(parents, funcao_fitness, numero_geracoes=1000):
+    histograma = []
+    # geracao zero
+    melhor_pai, melhor_fitness = GetFittestParent(
+        parents, funcao_fitness)  # extrai o individuo mais apto. (parents = posições aleatórias no eixo x, fitness = função da iteração)
 
     # plota o grafico da função
     x = np.linspace(start=-20, stop=20, num=1000)
-    plt.plot(x, fitness_function(x))
-    plt.scatter(parents, fitness_function(parents), marker='x')
+    plt.plot(x, funcao_fitness(x))
+    plt.scatter(parents, funcao_fitness(parents), marker='o')
 
-    # próximas MAX_ITER gerações
-    for i in range(1, max_iter):
-        parents = mutate(parents, fitness_function=fitness_function)
+    # próximas gerações
+    for i in range(1, numero_geracoes):
+        parents = mutate(parents, funcao_fitness=funcao_fitness)
 
-        curr_parent, curr_fitness = _get_fittest_parent(
-            parents, fitness_function)
+        pai_atual, fitness_atual = GetFittestParent(
+            parents, funcao_fitness)
 
         # atualiza os melhores valores de fitness
-        if curr_fitness < best_fitness:
-            best_fitness = curr_fitness
-            best_parent = curr_parent
+        if fitness_atual < melhor_fitness:
+            melhor_fitness = fitness_atual
+            melhor_pai = pai_atual
 
-        curr_parent, curr_fitness = _get_fittest_parent(
-            parents, fitness_function)
+        pai_atual, fitness_atual = GetFittestParent(
+            parents, funcao_fitness)
         # salva a menor coordenada
-        History.append((i, np.min(fitness_function(parents))))
+        histograma.append((i, np.min(funcao_fitness(parents))))
 
-    # plt.scatter(parents, fitness_function(parents))
-    plt.scatter(best_parent, fitness_function(
-        best_parent), marker='.', c='b', s=200)
+    plt.scatter(parents, funcao_fitness(parents))
+    plt.scatter(melhor_pai, funcao_fitness(
+        melhor_pai), marker='.', c='b', s=200)
     plt.show()
 
-    # return best parent
-    print('generation {}| best fitness {}| best_parent {}'.format(
-        i, best_fitness, best_parent))
+    print('generation {}| best fitness {}| melhor_pai {}'.format(
+        i, melhor_fitness, melhor_pai))
 
-    return best_parent, best_fitness, History
+    return melhor_pai, melhor_fitness, histograma
 
 
-def _get_fittest_parent(parents, fitness):
-    _fitness = fitness(parents)  # 100 pontos no eixo y
+def GetFittestParent(parents, fitness):
+    _fitness = fitness(parents)
     # lista de coordenas (x, y) da função
     PFitness = list(zip(parents, _fitness))
     # ordena a lista de coordenadas em ordem crescente de acordo com a variável do eixo x
     PFitness.sort(key=lambda x: x[1])
-    # (best_parent = x, best_fitness = y) ordem crescente
-    best_parent, best_fitness = PFitness[0]
-    return round(best_parent, 4), round(best_fitness, 4)
+    melhor_pai, melhor_fitness = PFitness[0]
+    return round(melhor_pai, 4), round(melhor_fitness, 4)
 
 
-x = np.linspace(start=-20, stop=20, num=400)  # 40 / 400 = 0.1 (step size)
-# 100 posições randomicas entre -20 e 20 (eixo x).
-init_pop = np.random.uniform(low=-20, high=20, size=100)
-
-parent_, fitness_, history_ = GA(init_pop, fitness)
-print('top parent {}, top fitness {}'.format(parent_, fitness_))
+fitness = np.vectorize(CalculaFitness)
+tamanho_populacao = np.random.uniform(low=-20, high=20, size=5)
+pai_, fitness_, histograma_ = GA(tamanho_populacao, fitness)
+print('melhor pai {}, melhor fitness {}'.format(pai_, fitness_))
