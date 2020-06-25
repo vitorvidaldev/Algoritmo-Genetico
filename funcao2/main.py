@@ -16,8 +16,8 @@ class GeneticAlgorithm():
     selected_positions = []
     best = 0
 
-    tuple_x_limits = (-400, 400)
-    tuple_y_limits = (-400, 400)
+    tuple_x_limits = (-512, 512)
+    tuple_y_limits = (-512, 512)
 
     def __init__(self):
         print("Class instance created")
@@ -69,7 +69,7 @@ class GeneticAlgorithm():
         self.population_x = new_fenotype
 
         for i in range(len(self.population_x)):
-            if self.population_x[i] > 400 or self.population_x[i] < -400:
+            if self.population_x[i] > 512 or self.population_x[i] < -512:
                 self.population_x[i] = random.uniform(-20, 20).__round__(4)
             else:
                 self.population_x[i] = round(self.population_x[i], 4)
@@ -89,7 +89,7 @@ class GeneticAlgorithm():
         self.population_y = new_fenotype
 
         for i in range(len(self.population_y)):
-            if self.population_y[i] > 400 or self.population_y[i] < -400:
+            if self.population_y[i] > 512 or self.population_y[i] < -512:
                 self.population_y[i] = random.uniform(-20, 20).__round__(4)
             else:
                 self.population_y[i] = round(self.population_y[i], 4)
@@ -108,7 +108,7 @@ class GeneticAlgorithm():
         self.selected_positions = []
         for i in range(50):
             k = random.randint(0, 99)
-            if self.numeric_fitness[k] < -500:
+            if self.numeric_fitness[k] < 0:
                 self.selected_positions.append(k)
             else:
                 self.selected_positions.append(random.randint(0, 99))
@@ -197,12 +197,6 @@ class GeneticAlgorithm():
             self.best = self.numeric_fitness[0]
         print(self.best)
 
-        # x = np.linspace(-20, 20, 400)
-        # function = np.vectorize(self.graphic)
-        # plt.plot(x, function(x))
-        # plt.scatter(self.numeric_fitness[0], function(self.numeric_fitness[0]))
-        # plt.show()
-
     def loop(self, iterations):
         while iterations > 0:
             self.fenotype_to_genotype()  # generates the genotype for the current generation
@@ -217,5 +211,5 @@ class GeneticAlgorithm():
 
 if __name__ == '__main__':
     ga = GeneticAlgorithm()
-    ga.generate_population(1000)
+    ga.generate_population(100)
     ga.loop(100)

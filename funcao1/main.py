@@ -17,6 +17,7 @@ class GeneticAlgorithm():
     genotype = []
     numeric_fitness = []
     selected_positions = []
+    best = 0
 
     tuple_x_limits = (-20, 20)
 
@@ -135,13 +136,15 @@ class GeneticAlgorithm():
 
     def select_fittest(self):
         self.numeric_fitness.sort()
-        print(self.numeric_fitness[0])
+        if self.numeric_fitness[0] < self.best:
+            self.best = self.numeric_fitness[0]
+        print(self.best)
 
-        x = np.linspace(-20, 20, 400)
-        function = np.vectorize(self.graphic)
-        plt.plot(x , function(x))
-        plt.scatter(self.numeric_fitness[0], function(self.numeric_fitness[0]))
-        plt.show()
+        # x = np.linspace(-20, 20, 400)
+        # function = np.vectorize(self.graphic)
+        # plt.plot(x , function(x))
+        # plt.scatter(self.best, function(self.best))
+        # plt.show()
 
     def loop(self, iterations):
         while iterations > 0:
@@ -152,7 +155,7 @@ class GeneticAlgorithm():
             self.mutation()
             self.genotype_to_fenotype()
             iterations = iterations - 1
-        self.select_fittest()
+            self.select_fittest()
 
 if __name__ == '__main__':
     ga = GeneticAlgorithm()
