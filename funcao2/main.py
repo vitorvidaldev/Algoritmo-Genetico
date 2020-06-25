@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import random
 import math
 from bitstring import BitArray
-
+import statistics
 
 class GeneticAlgorithm():
 
@@ -195,7 +195,7 @@ class GeneticAlgorithm():
         self.numeric_fitness.sort()
         if self.numeric_fitness[0] < self.best:
             self.best = self.numeric_fitness[0]
-        print(self.best)
+        return(self.best)
 
     def loop(self, iterations):
         while iterations > 0:
@@ -207,9 +207,15 @@ class GeneticAlgorithm():
             self.genotype_to_fenotype()
             iterations = iterations - 1
             self.select_fittest()
+        return self.select_fittest()
 
 
 if __name__ == '__main__':
-    ga = GeneticAlgorithm()
-    ga.generate_population(100)
-    ga.loop(100)
+    results = []
+    for i in range(0, 2):
+        ga = GeneticAlgorithm()
+        ga.generate_population(10000)
+        results.append(ga.loop(100))
+    print('Media: {}'.format(statistics.mean(results)))
+    print('Variancia: {}'.format(statistics.variance(results)))
+    print('Desvio padrão: {}'.format(statistics.stdev(results)))
