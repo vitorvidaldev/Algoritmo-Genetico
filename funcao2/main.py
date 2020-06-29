@@ -212,10 +212,10 @@ class GeneticAlgorithm():
 
 if __name__ == '__main__':
     results = []
-    for i in range(0, 2):
+    for i in range(0, 30):
         ga = GeneticAlgorithm()
-        ga.generate_population(10000)
-        results.append(ga.loop(100))
+        ga.generate_population(100)
+        results.append(ga.loop(1000))
     print('Media: {}'.format(statistics.mean(results)))
     print('Variancia: {}'.format(statistics.variance(results)))
     print('Desvio padrão: {}'.format(statistics.stdev(results)))

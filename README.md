@@ -1,6 +1,12 @@
 # Algoritmo-Genetico
 Implementação de um algoritmo genético em Python para encontrar o mínimo global em duas funções fitness distintas.
 
+## Instruções de instalação
+
+pip install numpy matplotlib random math bitstring statistics
+
+Após a instalação dos pacotes, basta executar o arquivo main.py.
+
 ## O que é um algoritmo genético?
 
 Um algoritmo genético é uma forma de busca heurística que imita o processo de seleção natural. Através dele são geradas soluções para problemas de otimização utilizando técnicas inspiradas por características evolucionárias, como seleção, mutação e crossover.
